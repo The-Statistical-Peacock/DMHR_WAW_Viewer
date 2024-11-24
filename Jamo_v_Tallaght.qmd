@@ -1,5 +1,6 @@
 ---
 title: "Jamo_v_Tallaght"
+format: dashboard
 ---
 
 ## Quarto
