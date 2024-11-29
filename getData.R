@@ -22,5 +22,32 @@ df <- df %>%
     `Monthly Time Bands`= as.integer(`Monthly Time Bands`) + 0.5
   ) 
 
+james_WaW <- df %>% 
+  filter(`hospital name` == "St. James's Hospital") %>% 
+  select(-Specialty) %>% 
+  group_by(report_date) %>% 
+  mutate(total = sum(Current),
+         weight = Current/total,
+         waw = weight * `Monthly Time Bands`) %>% 
+  summarise(WaW = sum(waw))
+
+
+tallaght_WaW <- df %>% 
+  filter(`hospital name` == "Tallaght University Hospital") %>% 
+  select(-Specialty) %>% 
+  group_by(report_date) %>% 
+  mutate(total = sum(Current),
+         weight = Current/total,
+         waw = weight * `Monthly Time Bands`) %>% 
+  summarise(WaW = sum(waw))
+
+Hospital_WaW <- df %>%
+  select(-Specialty) %>% 
+  group_by(report_date, `hospital name` ) %>% 
+  mutate(total = sum(Current),
+         weight = Current/total,
+         waw = weight * `Monthly Time Bands`) %>% 
+  summarise(WaW = sum(waw))
+
 
 

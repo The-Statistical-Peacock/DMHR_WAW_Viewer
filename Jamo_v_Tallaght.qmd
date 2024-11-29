@@ -3,11 +3,28 @@ title: "Jamo_v_Tallaght"
 format: dashboard
 ---
 
+```{r}
+library(ggplot2)
+source("getData.R")
+```
+
+
 # Page 1
 
 ## Column 1
 ```{r}
-1 + 1
+ggplot(james_WaW, aes(x = report_date, y = WaW)) +
+  geom_line(color = "darkgreen") +    # Add a line plot
+  geom_point(color = "lightblue") +    # Add points to the plot
+  labs(
+    title = "WaW Over Time",
+    x = "Report Date",
+    y = "WaW"
+  ) +
+    theme_minimal() +
+  theme(
+    panel.grid = element_blank()          # Removes gridlines
+  )
 ```
 
 
@@ -16,7 +33,50 @@ format: dashboard
 ## Column 1
 ```{r}
 
-2+2
+ggplot(tallaght_WaW, aes(x = report_date, y = WaW)) +
+  geom_line(color = "darkgreen") +    # Add a line plot
+  geom_point(color = "lightblue") +    # Add points to the plot
+  labs(
+    title = "WaW Over Time",
+    x = "Report Date",
+    y = "WaW"
+  ) +
+    theme_minimal() +
+  theme(
+    panel.grid = element_blank()          # Removes gridlines
+  )
 
 ```
+
+
+
+# Page 3
+
+## Column 1
+
+```{r}
+
+ggplot(Hospital_WaW, aes(x = report_date, y = WaW, color = `hospital name`)) +
+  geom_line(size = 1.2) +                # Line for each hospital
+  geom_point(size = 1) +                 # Points for visibility
+  labs(
+    title = "Comparison of WaW by Hospital",
+    x = "Report Date",
+    y = "WaW",
+    color = "Hospital Name"
+  ) +
+  scale_color_manual(
+    values = c("St. James's Hospital" = "darkgreen", 
+               "Tallaght University Hospital" = "darkblue") # Custom colors
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank()        # Remove gridlines
+  )
+
+```
+
+
+
+
 
