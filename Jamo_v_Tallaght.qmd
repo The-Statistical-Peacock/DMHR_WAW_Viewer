@@ -65,10 +65,6 @@ ggplot(Hospital_WaW, aes(x = report_date, y = WaW, color = `hospital name`)) +
     y = "WaW",
     color = "Hospital Name"
   ) +
-  scale_color_manual(
-    values = c("St. James's Hospital" = "darkgreen", 
-               "Tallaght University Hospital" = "darkblue") # Custom colors
-  ) +
   theme_minimal() +
   theme(
     panel.grid = element_blank()        # Remove gridlines
