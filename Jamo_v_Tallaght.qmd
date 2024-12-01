@@ -5,6 +5,7 @@ format: dashboard
 
 ```{r}
 library(ggplot2)
+library(plotly)
 source("getData.R")
 ```
 
@@ -13,18 +14,15 @@ source("getData.R")
 
 ## Column 1
 ```{r}
-ggplot(james_WaW, aes(x = report_date, y = WaW)) +
-  geom_line(color = "darkgreen") +    # Add a line plot
-  geom_point(color = "lightblue") +    # Add points to the plot
-  labs(
-    title = "WaW Over Time",
-    x = "Report Date",
-    y = "WaW"
-  ) +
-    theme_minimal() +
-  theme(
-    panel.grid = element_blank()          # Removes gridlines
+
+plot_ly(james_WaW, x = ~report_date, y = ~WaW, type = 'scatter', mode = 'lines+markers') %>% 
+    layout(
+    title = "St. James's Hospital WaW over Time",
+    xaxis = list(title = "Week Ending"),
+    yaxis = list(title = "Weighted Average Wait Time")
   )
+
+
 ```
 
 
@@ -33,17 +31,11 @@ ggplot(james_WaW, aes(x = report_date, y = WaW)) +
 ## Column 1
 ```{r}
 
-ggplot(tallaght_WaW, aes(x = report_date, y = WaW)) +
-  geom_line(color = "darkgreen") +    # Add a line plot
-  geom_point(color = "lightblue") +    # Add points to the plot
-  labs(
-    title = "WaW Over Time",
-    x = "Report Date",
-    y = "WaW"
-  ) +
-    theme_minimal() +
-  theme(
-    panel.grid = element_blank()          # Removes gridlines
+plot_ly(tallaght_WaW, x = ~report_date, y = ~WaW, type = 'scatter', mode = 'lines+markers') %>% 
+    layout(
+    title = "Tallaght University Hospital WaW over Time",
+    xaxis = list(title = "Week Ending"),
+    yaxis = list(title = "Weighted Average Wait Time")
   )
 
 ```
@@ -56,18 +48,11 @@ ggplot(tallaght_WaW, aes(x = report_date, y = WaW)) +
 
 ```{r}
 
-ggplot(Hospital_WaW, aes(x = report_date, y = WaW, color = `hospital name`)) +
-  geom_line(size = 1.2) +                # Line for each hospital
-  geom_point(size = 1) +                 # Points for visibility
-  labs(
-    title = "Comparison of WaW by Hospital",
-    x = "Report Date",
-    y = "WaW",
-    color = "Hospital Name"
-  ) +
-  theme_minimal() +
-  theme(
-    panel.grid = element_blank()        # Remove gridlines
+plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type = 'scatter', mode = 'lines+markers') %>% 
+    layout(
+    title = "Dublin Midlands Region WaW over Time",
+    xaxis = list(title = "Week Ending"),
+    yaxis = list(title = "Weighted Average Wait Time")
   )
 
 ```
