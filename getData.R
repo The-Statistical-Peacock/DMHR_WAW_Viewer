@@ -8,14 +8,19 @@ con <- dbConnect(duckdb::duckdb(), here("NTPF_WL.duckdb"))
 #dbGetQuery(con, "PRAGMA show_tables;")
 #dbGetQuery(con, "Describe OPD;")
 
-df <- tbl(con, "OPD") %>%
-  filter(`hospital name` %in% c("St. James's Hospital", "Tallaght University Hospital")) %>% 
+dubmid <- tbl(con, "OPD") %>%
+  filter(`hospital name` %in% c("St. James's Hospital", 
+                               "Tallaght University Hospital",
+                               "Naas General Hosptial",
+                               "Midland Regional Hospital Mullingar",
+                               "Midland Regional Hospital Portlaoise",
+                               "Midland Regional Hospital Tullamore")) %>% 
   select(`report_date`,`hospital name`, `Specialty`, `Monthly Time Bands`,`Current`) %>% 
   collect()
 
 dbDisconnect(con)
 
-df <- df %>%
+df <- dubmid %>%
   mutate(
     `Monthly Time Bands` = gsub("\\+", "", `Monthly Time Bands`),
     `Monthly Time Bands`= sub("^(\\S+).*", "\\1", `Monthly Time Bands`),
