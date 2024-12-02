@@ -2,63 +2,56 @@
 title: "Dublin Midlands WaW Viewer"
 format: 
   dashboard:
-    theme: zephyr
+    theme: flatly
     logo: images/clock-history.svg
 ---
 
 ```{r}
 library(plotly)
+library(DT)
 source("getData.R")
 ```
 
 
-# Page 1
+# Outpatients
 
-## Column 1
+## Column - Current WaW Table {height="40%"}
+
 ```{r}
+#| title: Current WaW by Hospital
 
-plot_ly(james_WaW, x = ~report_date, y = ~WaW, type = 'scatter', mode = 'lines+markers') %>% 
-    layout(
-    title = "St. James's Hospital WaW over Time",
-    xaxis = list(title = "Week Ending"),
-    yaxis = list(title = "Weighted Average Wait Time")
-  )
-
+# Create the table
+current_WaW %>% 
+  select(-report_date) %>% 
+  rename(Hospital = `hospital name`) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
 
 ```
 
-
-# Page 2
-
-## Column 1
-```{r}
-
-plot_ly(tallaght_WaW, x = ~report_date, y = ~WaW, type = 'scatter', mode = 'lines+markers') %>% 
-    layout(
-    title = "Tallaght University Hospital WaW over Time",
-    xaxis = list(title = "Week Ending"),
-    yaxis = list(title = "Weighted Average Wait Time")
-  )
-
-```
-
-
-
-# Page 3
-
-## Column 1
+## Column - Group WAW
 
 ```{r}
+#| title: Weighted Average Wait Time Since 2022
 
 plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type = 'scatter', mode = 'lines+markers') %>% 
     layout(
-    title = "Dublin Midlands Region WaW over Time",
-    xaxis = list(title = "Week Ending"),
-    yaxis = list(title = "Weighted Average Wait Time")
+    xaxis = list(title = "Week Ending", showgrid = FALSE),
+    yaxis = list(title = "Weighted Average Wait Time"),
+    plot_bgcolor = 'rgba(255, 255, 255, 0)', # 50% transparent white
+    paper_bgcolor = 'rgba(255, 255, 255, 0.5)' # 50% transparent white
   )
 
-```
 
+```
 
 
 
