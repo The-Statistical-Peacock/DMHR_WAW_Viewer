@@ -1,10 +1,12 @@
 ---
-title: "Jamo_v_Tallaght"
-format: dashboard
+title: "Dublin Midlands WaW Viewer"
+format: 
+  dashboard:
+    theme: zephyr
+    logo: images/clock-history.svg
 ---
 
 ```{r}
-library(ggplot2)
 library(plotly)
 source("getData.R")
 ```
