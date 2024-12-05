@@ -15,29 +15,8 @@ source("getData.R")
 
 # Outpatients
 
-## Column - Current WaW Table {height="40%"}
 
-```{r}
-#| title: Current WaW by Hospital
-
-# Create the table
-current_WaW %>% 
-  select(-report_date) %>% 
-  rename(Hospital = `hospital name`) %>% 
-datatable(
-          options = list(
-            paging = FALSE,       # Disable paging
-            searching = FALSE,    # Disable search box
-            columnDefs = list(
-              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
-              list(targets = 1, width = '100px')   # Adjust width of WaW column
-            )
-          )
-            ,rownames = FALSE)
-
-```
-
-## Column - Group WAW
+## Column - Group WAW {height = "60%"}
 
 ```{r}
 #| title: Weighted Average Wait Time Since 2022
@@ -53,6 +32,47 @@ plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type
 
 ```
 
+## Column {height="40%"}
 
+### Row - Current WaW Table {width="50%"}
+```{r}
+#| title: Current WaW by Hospital
+
+# Create the table
+current_hospital_WaW %>% 
+  select(-report_date) %>% 
+  rename(Hospital = `hospital name`) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
+
+```
+
+### Row - Specialty WaW Table {width="50%"}
+
+```{r}
+#| title: Current WaW by Speaciality
+
+# Create the table
+current_speciality_WaW %>% 
+  select(-report_date) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
+```
 
 
