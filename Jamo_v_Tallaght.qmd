@@ -2,7 +2,9 @@
 title: "Dublin Midlands WaW Viewer"
 format: 
   dashboard:
-    theme: flatly
+    theme: 
+      - sketchy
+      - custom.scss
     logo: images/clock-history.svg
 ---
 
@@ -15,7 +17,6 @@ source("getData.R")
 
 # Outpatients
 
-
 ## Column - Group WAW {height = "60%"}
 
 ```{r}
@@ -25,7 +26,7 @@ plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type
     layout(
     xaxis = list(title = "Week Ending", showgrid = FALSE),
     yaxis = list(title = "Weighted Average Wait Time"),
-    plot_bgcolor = 'rgba(255, 255, 255, 0)', # 50% transparent white
+    plot_bgcolor = 'rgba(255, 255, 255, 0.5)', # 50% transparent white
     paper_bgcolor = 'rgba(255, 255, 255, 0.5)' # 50% transparent white
   )
 
@@ -75,4 +76,6 @@ datatable(
             ,rownames = FALSE)
 ```
 
+# Inpatients/Day Cases
 
+# GI Scopes
