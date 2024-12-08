@@ -20,7 +20,7 @@ source("getData.R")
 ## Column - Group WAW {height = "60%"}
 
 ```{r}
-#| title: Weighted Average Wait Time Since 2022
+#| title: Outpaitent's Weighted Average Wait Time Since 2022
 
 plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type = 'scatter', mode = 'lines+markers') %>% 
     layout(
@@ -35,7 +35,7 @@ plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type
 
 ## Column {height="40%"}
 
-### Row - Current WaW Table {width="50%"}
+### Row - Current WaW Table {width="25%"}
 ```{r}
 #| title: Current WaW by Hospital
 
@@ -56,7 +56,7 @@ datatable(
 
 ```
 
-### Row - Specialty WaW Table {width="50%"}
+### Row - Specialty WaW Table {width="25%"}
 
 ```{r}
 #| title: Current WaW by Speaciality
@@ -74,6 +74,28 @@ datatable(
             )
           )
             ,rownames = FALSE)
+```
+
+
+### Row - Hospital Speciality Table {width="50%"}
+```{r}
+#| title: Current WaW by Hospital
+
+# Create the table
+current_hospital_WaW %>% 
+  select(-report_date) %>% 
+  rename(Hospital = `hospital name`) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
+
 ```
 
 # Inpatients/Day Cases

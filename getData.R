@@ -34,12 +34,24 @@ Hospital_WaW <- df %>%
   mutate(total = sum(Current),
          weight = Current/total,
          waw = weight * `Monthly Time Bands`) %>% 
-  summarise(WaW = sum(waw) %>% round(2))
+  summarise(WaW = sum(waw) %>% round(2)) %>% 
+  ungroup()
+  
 
 current_hospital_WaW <- Hospital_WaW %>% 
   group_by(`hospital name`) %>% 
   filter(report_date == max(report_date)) %>% 
-  mutate(WaW = round(WaW, 2))
+  mutate(WaW = round(WaW, 2)) %>% 
+  ungroup()
+
+
+current_speciality_WaW <- Specialty_WaW %>% 
+  group_by(Specialty) %>% 
+  filter(report_date == max(report_date)) %>% 
+  mutate(WaW = round(WaW, 2)) %>% 
+  filter(!is.nan(WaW)) %>% 
+  ungroup()
+
 
 Specialty_WaW <- df %>%
   select(-`hospital name`) %>% 
@@ -47,11 +59,5 @@ Specialty_WaW <- df %>%
   mutate(total = sum(Current),
          weight = Current/total,
          waw = weight * `Monthly Time Bands`) %>% 
-  summarise(WaW = sum(waw) %>% round(2)) 
-
-current_speciality_WaW <- Specialty_WaW %>% 
-  group_by(Specialty) %>% 
-  filter(report_date == max(report_date)) %>% 
-  mutate(WaW = round(WaW, 2)) %>% 
-  filter(!is.nan(WaW))
-
+  summarise(WaW = sum(waw) %>% round(2)) %>% 
+  ungroup()
