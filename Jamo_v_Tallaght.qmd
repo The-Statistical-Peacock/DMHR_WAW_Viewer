@@ -6,6 +6,8 @@ format:
       - sketchy
       - custom.scss
     logo: images/clock-history.svg
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
@@ -17,7 +19,7 @@ source("getData.R")
 
 # Outpatients
 
-## Column - Group WAW {height = "60%"}
+## Column - Graph WaW {height = "60%"}
 
 ```{r}
 #| title: Outpaitent's Weighted Average Wait Time Since 2022
@@ -25,7 +27,7 @@ source("getData.R")
 plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type = 'scatter', mode = 'lines+markers') %>% 
     layout(
     xaxis = list(title = "Week Ending", showgrid = FALSE),
-    yaxis = list(title = "Weighted Average Wait Time"),
+    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot'),
     plot_bgcolor = 'rgba(255, 255, 255, 0.5)', # 50% transparent white
     paper_bgcolor = 'rgba(255, 255, 255, 0.5)' # 50% transparent white
   )
@@ -33,9 +35,9 @@ plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type
 
 ```
 
-## Column {height="40%"}
+## Column - WaW Tables {height="40%"}
 
-### Row - Current WaW Table {width="25%"}
+### Row - Hospital WaW Table {width="25%"}
 ```{r}
 #| title: Current WaW by Hospital
 
@@ -79,22 +81,23 @@ datatable(
 
 ### Row - Hospital Speciality Table {width="50%"}
 ```{r}
-#| title: Current WaW by Hospital
+#| title: Current WaW by Hospital, Specialty
 
-# Create the table
-current_hospital_WaW %>% 
-  select(-report_date) %>% 
-  rename(Hospital = `hospital name`) %>% 
+pivot_data <- Spec_Hos_WaW %>%
+  pivot_wider(names_from = Specialty, values_from = WaW)
+
 datatable(
-          options = list(
-            paging = FALSE,       # Disable paging
-            searching = FALSE,    # Disable search box
-            columnDefs = list(
-              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
-              list(targets = 1, width = '100px')   # Adjust width of WaW column
-            )
-          )
-            ,rownames = FALSE)
+  pivot_data,
+  options = list(
+    paging = FALSE,
+    searching = FALSE,
+    columnDefs = list(
+      list(targets = 0, width = '200px'),
+      list(targets = 1, width = '100px')
+    )
+  ),
+  rownames = FALSE
+)
 
 ```
 
