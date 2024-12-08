@@ -84,17 +84,17 @@ datatable(
 #| title: Current WaW by Hospital, Specialty
 
 pivot_data <- Spec_Hos_WaW %>%
-  pivot_wider(names_from = Specialty, values_from = WaW)
+  pivot_wider(names_from = Specialty, values_from = WaW) %>% 
+  rename(Hospital = `hospital name`)
 
 datatable(
   pivot_data,
+  extensions = 'Buttons', # Enable Buttons extension
   options = list(
+    dom = 'Bfrtip', # Add buttons to the top of the table
+    buttons = c('excel', 'pdf', 'print'), # Available buttons
     paging = FALSE,
-    searching = FALSE,
-    columnDefs = list(
-      list(targets = 0, width = '200px'),
-      list(targets = 1, width = '100px')
-    )
+    searching = FALSE
   ),
   rownames = FALSE
 )
