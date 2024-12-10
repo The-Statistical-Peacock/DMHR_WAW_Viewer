@@ -5,7 +5,7 @@ format:
     theme: 
       - sketchy
       - custom.scss
-    logo: images/clock-history.svg
+    logo: images/clock.svg
 editor_options: 
   chunk_output_type: inline
 ---
