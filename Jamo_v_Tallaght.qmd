@@ -38,9 +38,7 @@ plot_ly(Hospital_WaW,
   layout(
     hovermode = "x unified",  # Unified hover mode
     xaxis = list(title = "Week Ending", showgrid = FALSE),
-    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot'),
-    plot_bgcolor = 'rgba(255, 255, 255, 0.5)',  # Transparent background
-    paper_bgcolor = 'rgba(255, 255, 255, 0.5)'  # Transparent paper
+    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot') # Transparent paper
   )
 
 
