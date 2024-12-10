@@ -31,9 +31,7 @@ plot_ly(Hospital_WaW,
         type = 'scatter', 
         mode = 'lines+markers',
         hovertemplate = paste(
-          "<b>Hospital:</b> %{customdata[0]}<br>",
-          "<b>Report Date:</b> %{x}<br>",
-          "<b>Value:</b> %{y}<extra></extra>"
+          "%{y}"
         ),
         customdata = ~`hospital name` # Include hospital name as custom data
 ) %>% 
