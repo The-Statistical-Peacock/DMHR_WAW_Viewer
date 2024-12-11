@@ -2,10 +2,11 @@
 title: "Dublin Midlands WaW Viewer"
 format: 
   dashboard:
-    theme: 
-      - sketchy
-      - custom.scss
-    logo: images/clock-history.svg
+    theme:
+      light: 
+        - sketchy
+        - custom.scss
+    logo: images/clock.svg
 editor_options: 
   chunk_output_type: inline
 ---
@@ -24,20 +25,29 @@ source("getData.R")
 ```{r}
 #| title: Outpaitent's Weighted Average Wait Time Since 2022
 
-plot_ly(Hospital_WaW, x = ~report_date, y = ~WaW, color = ~`hospital name`, type = 'scatter', mode = 'lines+markers') %>% 
-    layout(
+plot_ly(Hospital_WaW, 
+        x = ~report_date, 
+        y = ~WaW, 
+        color = ~`hospital name`, 
+        type = 'scatter', 
+        mode = 'lines+markers',
+        hovertemplate = paste(
+          "%{y}"
+        ),
+        customdata = ~`hospital name` # Include hospital name as custom data
+) %>% 
+  layout(
+    hovermode = "x unified",  # Unified hover mode
     xaxis = list(title = "Week Ending", showgrid = FALSE),
-    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot'),
-    plot_bgcolor = 'rgba(255, 255, 255, 0.5)', # 50% transparent white
-    paper_bgcolor = 'rgba(255, 255, 255, 0.5)' # 50% transparent white
+    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot') # Transparent paper
   )
 
 
 ```
 
-## Column - WaW Tables {height="40%"}
+## Column - WaW Tables {height="30%"}
 
-### Row - Hospital WaW Table {width="25%"}
+### Row - Hospital & Specialty WaW Tables {width="35%"} {.tabset}
 ```{r}
 #| title: Current WaW by Hospital
 
@@ -58,8 +68,6 @@ datatable(
 
 ```
 
-### Row - Specialty WaW Table {width="25%"}
-
 ```{r}
 #| title: Current WaW by Speaciality
 
@@ -79,7 +87,8 @@ datatable(
 ```
 
 
-### Row - Hospital Speciality Table {width="50%"}
+### Row - Hospital Speciality Table {width="65%"}
+
 ```{r}
 #| title: Current WaW by Hospital, Specialty
 
@@ -92,7 +101,7 @@ datatable(
   extensions = 'Buttons', # Enable Buttons extension
   options = list(
     dom = 'Bfrtip', # Add buttons to the top of the table
-    buttons = c('excel', 'pdf', 'print'), # Available buttons
+    buttons = c('excel', 'print'), # Available buttons
     paging = FALSE,
     searching = FALSE
   ),
@@ -103,4 +112,15 @@ datatable(
 
 # Inpatients/Day Cases
 
+```{r}
+cat("Currently Under Construction: Coming Soon")
+```
+
+
 # GI Scopes
+
+```{r}
+cat("Currently Under Construction: Coming Soon")
+```
+
+
