@@ -12,6 +12,7 @@ con <- dbConnect(duckdb::duckdb(), here("NTPF_WL.duckdb"))
 #dbGetQuery(con, "Describe IPDC;")
 
 dubmid_ipdc <- tbl(con, "IPDC") %>%
+  filter(`WL Type` %in% c('Adult', 'Child')) %>% 
   filter(`Hospital` %in% c("St. James's Hospital", 
                                 "Tallaght University Hospital",
                                 "Naas General Hosptial",
@@ -26,9 +27,10 @@ dbDisconnect(con)
 #-------- IPDC---DubMid Data Gathering ---------#
 df_ipdc <- dubmid_ipdc %>%
   mutate(
-    `Monthly Time Bands` = gsub("\\+", "", `Monthly Time Bands`),
-    `Monthly Time Bands`= sub("^(\\S+).*", "\\1", `Monthly Time Bands`),
-    `Monthly Time Bands`= as.integer(`Monthly Time Bands`) + 0.5
+    `Monthly Time Band` = gsub("\\+", "", `Monthly Time Band`),
+    `Monthly Time Band` = gsub("\\-", " ", `Monthly Time Band`),
+    `Monthly Time Band`= sub("^(\\S+).*", "\\1", `Monthly Time Band`),
+    `Monthly Time Band`= as.integer(`Monthly Time Band`) + 0.5
   ) 
 
 
@@ -46,7 +48,7 @@ Hospital_WaW_IPDC <- df_ipdc %>%
   group_by(report_date, `hospital name` ) %>% 
   mutate(total = sum(Current),
          weight = Current/total,
-         waw = weight * `Monthly Time Bands`) %>% 
+         waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
@@ -56,7 +58,7 @@ Specialty_WaW_IPDC <- df_ipdc %>%
   group_by(report_date, Specialty ) %>% 
   mutate(total = sum(Current),
          weight = Current/total,
-         waw = weight * `Monthly Time Bands`) %>% 
+         waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
@@ -68,7 +70,7 @@ Spec_Hos_WaW_IPDC <- df_ipdc %>%
   group_by(`hospital name`, Specialty ) %>% 
   mutate(total = sum(Current),
          weight = Current/total,
-         waw = weight * `Monthly Time Bands`) %>% 
+         waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
