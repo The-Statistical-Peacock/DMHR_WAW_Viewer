@@ -8,7 +8,7 @@ library(here)
 #---------- DuckDB Operations ------------#
 con <- dbConnect(duckdb::duckdb(), here("NTPF_WL.duckdb"))
 
-#dbGetQuery(con, "PRAGMA show_tables;")
+dbGetQuery(con, "PRAGMA show_tables;")
 #dbGetQuery(con, "Describe OPD;")
 
 dubmid <- tbl(con, "OPD") %>%
