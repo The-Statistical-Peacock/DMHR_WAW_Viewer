@@ -8,10 +8,10 @@ library(here)
 #---------- DuckDB Operations ------------#
 con <- dbConnect(duckdb::duckdb(), here("NTPF_WL.duckdb"))
 
-dbGetQuery(con, "PRAGMA show_tables;")
-#dbGetQuery(con, "Describe OPD;")
+#dbGetQuery(con, "PRAGMA show_tables;")
+#dbGetQuery(con, "Describe IPDC;")
 
-dubmid <- tbl(con, "OPD") %>%
+dubmid_opd <- tbl(con, "OPD") %>%
   filter(`hospital name` %in% c("St. James's Hospital", 
                                "Tallaght University Hospital",
                                "Naas General Hosptial",
@@ -21,10 +21,20 @@ dubmid <- tbl(con, "OPD") %>%
   select(`report_date`,`hospital name`, `Specialty`, `Monthly Time Bands`,`Current`) %>% 
   collect()
 
+dubmid_ipdc <- tbl(con, "IPDC") %>%
+  filter(`Hospital` %in% c("St. James's Hospital", 
+                                "Tallaght University Hospital",
+                                "Naas General Hosptial",
+                                "Midland Regional Hospital Mullingar",
+                                "Midland Regional Hospital Portlaoise",
+                                "Midland Regional Hospital Tullamore")) %>% 
+  select(`report_date`,`Hospital`, `Specialty`, `Monthly Time Band`,`This Week`) %>% 
+  collect()
+
 dbDisconnect(con)
 
-#-------- DubMid Data Gathering ---------#
-df <- dubmid %>%
+#-------- OPD---DubMid Data Gathering ---------#
+df_opd <- dubmid_opd %>%
   mutate(
     `Monthly Time Bands` = gsub("\\+", "", `Monthly Time Bands`),
     `Monthly Time Bands`= sub("^(\\S+).*", "\\1", `Monthly Time Bands`),
@@ -32,16 +42,16 @@ df <- dubmid %>%
   ) 
 
 
-big_7 <- c("Otolaryngology (ENT)",
-           "Cardiology",
-           "Dermatology",
-           "Gynaecology",
-           "Ophthalmology",
-           "Rheumatology",
-           "Orthopaedics")
+big_7_opd <- c("Otolaryngology (ENT)",
+               "Cardiology",
+               "Dermatology",
+               "Gynaecology",
+               "Ophthalmology",
+               "Rheumatology",
+               "Orthopaedics")
 
-#---------- Get WaW by Hospital ---------#
-Hospital_WaW <- df %>%
+#---------- OPD---Get WaW by Hospital ---------#
+Hospital_WaW_OPD <- df_opd %>%
   select(-Specialty) %>% 
   group_by(report_date, `hospital name` ) %>% 
   mutate(total = sum(Current),
@@ -50,8 +60,8 @@ Hospital_WaW <- df %>%
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
-#-------- Get WaW by Specialty -------#
-Specialty_WaW <- df %>%
+#-------- OPD---Get WaW by Specialty -------#
+Specialty_WaW_OPD <- df_opd %>%
   select(-`hospital name`) %>% 
   group_by(report_date, Specialty ) %>% 
   mutate(total = sum(Current),
@@ -60,10 +70,10 @@ Specialty_WaW <- df %>%
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
-#--------- Get CURRENT WaW of BIG 7 by Hospital, Specialty -----------#
-Spec_Hos_WaW <- df %>%
+#--------- OPD---Get CURRENT WaW of BIG 7 by Hospital, Specialty -----------#
+Spec_Hos_WaW_OPD <- df_opd %>%
   filter(report_date == max(report_date),
-         Specialty %in% big_7) %>% 
+         Specialty %in% big_7_opd) %>% 
   select(-report_date) %>% 
   group_by(`hospital name`, Specialty ) %>% 
   mutate(total = sum(Current),
@@ -72,15 +82,15 @@ Spec_Hos_WaW <- df %>%
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
-#--------- Get CURRENT WaW by Hospital ------------#
-current_hospital_WaW <- Hospital_WaW %>% 
+#--------- OPD---Get CURRENT WaW by Hospital ------------#
+current_hospital_WaW_OPD <- Hospital_WaW_OPD %>% 
   group_by(`hospital name`) %>% 
   filter(report_date == max(report_date)) %>% 
   mutate(WaW = round(WaW, 2)) %>% 
   ungroup()
 
-#-------- Get CURRENT WaW by Specialty ------------#
-current_speciality_WaW <- Specialty_WaW %>% 
+#-------- OPD---Get CURRENT WaW by Specialty ------------#
+current_speciality_WaW_OPD <- Specialty_WaW_OPD %>% 
   group_by(Specialty) %>% 
   filter(report_date == max(report_date)) %>% 
   mutate(WaW = round(WaW, 2)) %>% 
