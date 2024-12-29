@@ -13,6 +13,8 @@ editor_options:
 ---
 
 ```{r}
+#| message: false
+#| warning: false
 library(plotly)
 library(DT)
 source("getData.R")
@@ -26,7 +28,7 @@ source("getData.R")
 ```{r}
 #| title: Outpaitent's Weighted Average Wait Time Since 2022
 
-plot_ly(Hospital_WaW, 
+plot_ly(Hospital_WaW_OPD, 
         x = ~report_date, 
         y = ~WaW, 
         color = ~`hospital name`, 
@@ -53,7 +55,7 @@ plot_ly(Hospital_WaW,
 #| title: Current WaW by Hospital
 
 # Create the table
-current_hospital_WaW %>% 
+current_hospital_WaW_OPD %>% 
   select(-report_date) %>% 
   rename(Hospital = `hospital name`) %>% 
 datatable(
@@ -73,7 +75,7 @@ datatable(
 #| title: Current WaW by Speaciality
 
 # Create the table
-current_speciality_WaW %>% 
+current_speciality_WaW_OPD %>% 
   select(-report_date) %>% 
 datatable(
           options = list(
@@ -93,7 +95,7 @@ datatable(
 ```{r}
 #| title: Current WaW by Hospital, Specialty
 
-pivot_data <- Spec_Hos_WaW %>%
+pivot_data <- Spec_Hos_WaW_OPD %>%
   pivot_wider(names_from = Specialty, values_from = WaW) %>% 
   rename(Hospital = `hospital name`)
 
