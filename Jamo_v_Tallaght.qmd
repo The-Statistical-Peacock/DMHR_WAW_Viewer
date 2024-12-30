@@ -24,7 +24,7 @@ source("getData_IPDC.R")
 
 # Outpatients
 
-## Column - Graph WaW {height = "60%"}
+## Column - OPD Graph WaW {height = "60%"}
 
 ```{r}
 #| title: Outpaitent's Weighted Average Wait Time Since 2022
@@ -49,11 +49,11 @@ plot_ly(Hospital_WaW_OPD,
 
 ```
 
-## Column - WaW Tables {height="30%"}
+## Column - OPD WaW Tables {height="30%"}
 
-### Row - Hospital & Specialty WaW Tables {width="35%"} {.tabset}
+### Row - OPD Hospital & Specialty WaW Tables {width="35%"} {.tabset}
 ```{r}
-#| title: Current WaW by Hospital
+#| title: Current WaW by Hospital (OPD)
 
 # Create the table
 current_hospital_WaW_OPD %>% 
@@ -73,7 +73,7 @@ datatable(
 ```
 
 ```{r}
-#| title: Current WaW by Speaciality
+#| title: Current WaW by Speaciality (OPD)
 
 # Create the table
 current_speciality_WaW_OPD %>% 
@@ -91,10 +91,10 @@ datatable(
 ```
 
 
-### Row - Hospital Speciality Table {width="65%"}
+### Row - OPD Hospital Speciality Table {width="65%"}
 
 ```{r}
-#| title: Current WaW by Hospital, Specialty
+#| title: Current WaW by Hospital, Specialty (OPD)
 
 pivot_data <- Spec_Hos_WaW_OPD %>%
   pivot_wider(names_from = Specialty, values_from = WaW) %>% 
@@ -116,8 +116,92 @@ datatable(
 
 # Inpatients/Day Cases
 
+## Column - IPDC Graph WaW {height = "60%"}
+
 ```{r}
-cat("Currently Under Construction: Coming Soon")
+#| title: Inpaitent & Daycases's Weighted Average Wait Time Since 2022
+
+plot_ly(Hospital_WaW_IPDC, 
+        x = ~report_date, 
+        y = ~WaW, 
+        color = ~Hospital, 
+        type = 'scatter', 
+        mode = 'lines+markers',
+        hovertemplate = paste(
+          "%{y}"
+        ),
+        customdata = ~Hospital # Include hospital name as custom data
+) %>% 
+  layout(
+    hovermode = "x unified",  # Unified hover mode
+    xaxis = list(title = "Week Ending", showgrid = FALSE),
+    yaxis = list(title = "Weighted Average Wait Time", griddash = 'dot') # Transparent paper
+  )
+
+
+```
+
+## Column - IPDC WaW Tables {height="30%"}
+
+### Row - IPDC Hospital & Specialty WaW Tables {width="35%"} {.tabset}
+```{r}
+#| title: Current WaW by Hospital (IPDC)
+
+# Create the table
+current_hospital_WaW_IPDC %>% 
+  select(-report_date) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
+
+```
+
+```{r}
+#| title: Current WaW by Speaciality (IPDC)
+
+# Create the table
+current_speciality_WaW_IPDC %>% 
+  select(-report_date) %>% 
+datatable(
+          options = list(
+            paging = FALSE,       # Disable paging
+            searching = FALSE,    # Disable search box
+            columnDefs = list(
+              list(targets = 0, width = '200px'),  # Adjust width of hospital name column
+              list(targets = 1, width = '100px')   # Adjust width of WaW column
+            )
+          )
+            ,rownames = FALSE)
+```
+
+
+### Row - IPDC Hospital Speciality Table {width="65%"}
+
+```{r}
+#| title: Current WaW by Hospital, Specialty (IPDC)
+
+pivot_data <- Spec_Hos_WaW_IPDC %>%
+  pivot_wider(names_from = Specialty, values_from = WaW)
+
+datatable(
+  pivot_data,
+  extensions = 'Buttons', # Enable Buttons extension
+  options = list(
+    dom = 'Bfrtip', # Add buttons to the top of the table
+    buttons = c('excel', 'print'), # Available buttons
+    paging = FALSE,
+    searching = FALSE
+  ),
+  rownames = FALSE
+)
+
 ```
 
 

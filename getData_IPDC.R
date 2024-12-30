@@ -45,43 +45,43 @@ big_7_ipdc <- c("Otolaryngology (ENT)",
 #---------- IPDC---Get WaW by Hospital ---------#
 Hospital_WaW_IPDC <- df_ipdc %>%
   select(-Specialty) %>% 
-  group_by(report_date, `hospital name` ) %>% 
-  mutate(total = sum(Current),
-         weight = Current/total,
+  group_by(report_date, `Hospital` ) %>% 
+  mutate(total = sum(`This Week`),
+         weight = `This Week`/total,
          waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
 #-------- IPDC---Get WaW by Specialty -------#
 Specialty_WaW_IPDC <- df_ipdc %>%
-  select(-`hospital name`) %>% 
+  select(-`Hospital`) %>% 
   group_by(report_date, Specialty ) %>% 
-  mutate(total = sum(Current),
-         weight = Current/total,
+  mutate(total = sum(`This Week`),
+         weight = `This Week`/total,
          waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
-#--------- IPDC---Get CURRENT WaW of BIG 7 by Hospital, Specialty -----------#
+#--------- IPDC---Get This Week WaW of BIG 7 by Hospital, Specialty -----------#
 Spec_Hos_WaW_IPDC <- df_ipdc %>%
   filter(report_date == max(report_date),
          Specialty %in% big_7_ipdc) %>% 
   select(-report_date) %>% 
-  group_by(`hospital name`, Specialty ) %>% 
-  mutate(total = sum(Current),
-         weight = Current/total,
+  group_by(`Hospital`, Specialty ) %>% 
+  mutate(total = sum(`This Week`),
+         weight = `This Week`/total,
          waw = weight * `Monthly Time Band`) %>% 
   summarise(WaW = sum(waw) %>% round(2)) %>% 
   ungroup()
 
-#--------- IPDC---Get CURRENT WaW by Hospital ------------#
+#--------- IPDC---Get This Week WaW by Hospital ------------#
 current_hospital_WaW_IPDC <- Hospital_WaW_IPDC %>% 
-  group_by(`hospital name`) %>% 
+  group_by(`Hospital`) %>% 
   filter(report_date == max(report_date)) %>% 
   mutate(WaW = round(WaW, 2)) %>% 
   ungroup()
 
-#-------- IPDC---Get CURRENT WaW by Specialty ------------#
+#-------- IPDC---Get This Week WaW by Specialty ------------#
 current_speciality_WaW_IPDC <- Specialty_WaW_IPDC %>% 
   group_by(Specialty) %>% 
   filter(report_date == max(report_date)) %>% 
