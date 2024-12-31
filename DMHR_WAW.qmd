@@ -182,7 +182,7 @@ datatable(
             ,rownames = FALSE)
 ```
 
-### Row - IPDC Hospital Speciality Table {width="65%"}
+### Row - IPDC Hospital Specialty Table {width="65%"}
 
 ```{r}
 #| title: Current WaW by Hospital, Specialty
@@ -206,10 +206,11 @@ datatable(
 
 # GI Scopes
 
-## Column - GI Graph WaW {height = "60%"}
+## Column - GI Graph WaW {height = "60%", background-color: "red"}
 
 ```{r}
 #| title: GI Scope Weighted Average Wait Time Since 2022
+
 
 plot_ly(Hospital_WaW_GI, 
         x = ~report_date, 
@@ -230,6 +231,7 @@ plot_ly(Hospital_WaW_GI,
 
 
 ```
+
 
 ## Column - GI WaW Tables {height="30%"}
 
@@ -254,7 +256,7 @@ datatable(
 
 ```
 
-### Row - GI Hospital Speciality Table {width="65%"}
+### Row - GI Hospital Specialty Table {width="65%"}
 
 ```{r}
 #| title: Current WaW by Hospital, Specialty
