@@ -206,7 +206,7 @@ datatable(
 
 # GI Scopes
 
-## Column - GI Graph WaW {height = "60%", background-color: "red"}
+## Column - GI Graph WaW {height = "60%"}
 
 ```{r}
 #| title: GI Scope Weighted Average Wait Time Since 2022
@@ -231,7 +231,6 @@ plot_ly(Hospital_WaW_GI,
 
 
 ```
-
 
 ## Column - GI WaW Tables {height="30%"}
 
